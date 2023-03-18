@@ -1,4 +1,4 @@
-#!/workspaces/Hackathon2023/env/bin/python3
+#!/workspaces/Hackathon2023/env/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
