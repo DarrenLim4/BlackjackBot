@@ -3,7 +3,7 @@ from enum import Enum
 
 
 class Cards(Enum):
-    ACE = {'card': 1, 'value': [1, 11]}
+    A = {'card': 1, 'value': [1, 11]}
     TWO = {'card': 2, 'value': 2}
     THREE = {'card': 3, 'value': 3}
     FOUR = {'card': 4, 'value': 4}
@@ -13,14 +13,18 @@ class Cards(Enum):
     EIGHT = {'card': 8, 'value': 8}
     NINE = {'card': 9, 'value': 9}
     TEN = {'card': 10, 'value': 10}
-    JACK = {'card': 11, 'value': 10}
-    QUEEN = {'card': 12, 'value': 10}
-    KING = {'card': 13, 'value': 10}
+    J = {'card': 11, 'value': 10}
+    Q = {'card': 12, 'value': 10}
+    K = {'card': 13, 'value': 10}
+
+def cards(card):
+    #match the card name string to the enum
+    return [Cards[x.upper()] for x in card] if isinstance(card, list) else Cards[card.upper()]
 #input number of decks being played on the game
 numofdecks = int(input("Number of decks being used on this game: "))
 
 deck = {
-    Cards.ACE: 4*numofdecks,
+    Cards.A: 4*numofdecks,
     Cards.TWO: 4*numofdecks,
     Cards.THREE: 4*numofdecks,
     Cards.FOUR: 4*numofdecks,
@@ -30,14 +34,16 @@ deck = {
     Cards.EIGHT: 4*numofdecks,
     Cards.NINE: 4*numofdecks,
     Cards.TEN: 4*numofdecks,
-    Cards.JACK: 4*numofdecks,
-    Cards.QUEEN: 4*numofdecks,
-    Cards.KING: 4*numofdecks
+    Cards.J: 4*numofdecks,
+    Cards.Q: 4*numofdecks,
+    Cards.K: 4*numofdecks
 }
+
+
 #number of cards in the deck
 numofcards = numofdecks * 52
 #running count
-count = 0 
+count = 0
 #track cards that were previusly played on the game
 yourhand = []
 yourcount=0
@@ -66,11 +72,11 @@ def cardcount(dealt):
         count = - 1
     return count/decksLeft
 
-def dothathing():
-    total= sum([x["value"] for x in deck if deck[x]["value"]>=(21-yourcount)])
+def dothatinC():
+    total= sum([x.value["value"] for x in deck if (x.value["value"][])>=(21-yourcount)])
     print(total)
 
-    
+
 #create class to tell how many copies of each card there are
 # class Deck():
 
@@ -79,9 +85,13 @@ def dothathing():
 
 
 while(True):
-    usercards= Cards(input("Initial User Cards: ").split())
-    dealercards= Cards(input("Initial Dealer Card: "))
-    othercards= Cards(input("Other cards on the table: ").split())
-    cardcount(dealt)
+    yourhand = cards(input("Initial User Cards: ").split())
+    print(yourhand)
+    yourcount=sum([x.value["value"] for x in yourhand])
+    print(yourcount)
+    dothathing()
+    # usercards = Cards(cardsIn)
+    # dealercards= Cards(input("Initial Dealer Card: "))
+    # othercards= Cards(input("Other cards on the table: ").split())
     
-
+    # cardcount(dealt)
