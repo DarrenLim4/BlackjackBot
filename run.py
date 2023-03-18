@@ -79,36 +79,9 @@ def dothathing():
 
 
 while(True):
-    dealt= Cards(input())
+    usercards= Cards(input("Initial User Cards: ").split())
+    dealercards= Cards(input("Initial Dealer Card: "))
+    othercards= Cards(input("Other cards on the table: ").split())
     cardcount(dealt)
     
 
-
-# How to Use the Wong Halves System?
-# Before starting to count cards, players should determine their bankroll, as well as the minimum and maximum bets they are comfortable with. 
-# A good betting spread for beginners is 1-5, while larger spreads such as 1-10, 1-20 or more, offer more profitability and greater risk at the same time. 
-# Players start off the game with 1-unit bets after a reshuffle.
-# They begin the count at 0 and add or subtract numbers from it as the cards appear on the table.
-
-# As the structure of this system is a bit more complicated than usual,
-#  let’s take a 6-deck game as an example. The first cards dealt on the table are 7, 2, Queen, 4, and 8, corresponding to +0.5, +0.5, -1, +1, and 0.
-#  This means that our running count is +1, indicating that the player has a slight advantage over the house. 
-# However, these are just the first five cards dealt out of all 312 cards in the six decks used in this game.
-
-# If even 2 cards with a negative value are drawn in the next deal, the count will dip below 0. 
-# This lack of uncertainty caused by the many cards still remaining in the shoe makes the running count of +1 completely irrelevant. 
-# In order to provide players with a more adequate count, the system requires conversion to the so-called “true count”.
-
-# True Count
-# Unlike the running count that is constantly kept by players during the game, the true count takes the number of decks still not played into consideration. 
-# There are several different ways to determine the true count but most players stick to a simple and proven method – they just divide the running count by the number of decks in the shoe.
-
-# Following the same example, we have a running count of +1.
-#  Assuming some cards have been burnt and some have been dealt, there will be around 5 decks and half still left in the shoe. 
-# If 5 decks of cards are remaining (at best), we need to divide 1 by 5 for a true count of +0.20.
-
-# Since higher counts indicate better odds for the player, the true count we have is not impressive at all. 
-# In fact, we need a minimum true count of +2 to gain some actual advantage over the house. 
-# This means that we keep placing our minimum wager until the count becomes +2 or higher. 
-# Then, we increase the bet size to maximize the potential profits resulting from a favorable situation. 
-# The higher the count, the greater the bets should be. Of course, players should bet less when the count is low.
