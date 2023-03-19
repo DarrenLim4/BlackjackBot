@@ -66,18 +66,25 @@ dealercount=0
 # When you see a 2 or 7: Add 0.5 to your running count
 # When you see a 3, 4, 5, or 6: Add 1 to your running count
 def cardcount(dealt,cnt):
-    decksLeft = int(numofcards % 52)
-    if dealt == Cards.TWO.value["card"] or dealt == Cards.SEVEN.value["card"]:
-        cnt = + 0.5
-    elif dealt == Cards.THREE.value["card"] or dealt == Cards.FOUR.value["card"] or dealt == Cards.SIX.value["card"]:
-        cnt = + 1
-    elif dealt == Cards.FIVE.value["card"]:
-        cnt = + 1.5
-    elif dealt == Cards.NINE.value["card"]:
-        cnt = - 0.5
-    elif dealt == Cards.A.value["card"] or dealt == Cards.TEN.value["card"] or dealt == Cards.J.value["card"] or dealt == Cards.Q.value["card"] or dealt == Cards.K.value["card"]:
-        cnt = - 1
-    return cnt/decksLeft,cnt
+    print(dealt)
+    decksLeft=0
+    if numofcards <= 52:
+        decksLeft = 1
+    else:
+        decksLeft = int((numofcards / 52))
+    print(f"Start:{cnt,decksLeft}")
+    if dealt == Cards.TWO or dealt == Cards.SEVEN:
+        cnt += 0.5
+    elif dealt == Cards.THREE or dealt == Cards.FOUR or dealt == Cards.SIX:
+        cnt += 1
+    elif dealt == Cards.FIVE:
+        cnt += 1.5
+    elif dealt == Cards.NINE:
+        cnt -= 0.5
+    elif dealt == Cards.A or dealt == Cards.TEN or dealt == Cards.J or dealt == Cards.Q or dealt == Cards.K:
+        cnt -= 1
+    print(f"End:{cnt,decksLeft}")
+    return float(cnt)/float(decksLeft),cnt
 
 def dothathing():
     total=0
@@ -138,5 +145,3 @@ while True: #Round Loop
         that,count=cardcount(x,count)
     print(f"The advantage we have is {that}")
     # cardcount(dealt)
-
-    
