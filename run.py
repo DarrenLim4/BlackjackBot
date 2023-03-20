@@ -2,6 +2,9 @@ import numpy as np
 from enum import Enum
 
 global numofcards
+CRED = '\033[91m'
+CEND = '\033[0m'
+print(f'{CRED}I am __Xx_LIMDestroyer69_xX__ and I am here to Destroy you!{CEND}')
 class Cards(Enum):
     A = {'card': 1, 'value': [1,11]}
     TWO = {'card': 2, 'value': [2]}
@@ -56,8 +59,10 @@ that=0
 #track cards that were previusly played on the game
 yourhand = []
 yourcount=0
+yourparts = 0
 dealershand = []
 dealercount=0
+
 
 # Start with a count of 0
 # When you see an A, K, Q, J, or 10: Subtract 1 from your running count
@@ -66,13 +71,11 @@ dealercount=0
 # When you see a 2 or 7: Add 0.5 to your running count
 # When you see a 3, 4, 5, or 6: Add 1 to your running count
 def cardcount(dealt,cnt):
-    print(dealt)
     decksLeft=0
     if numofcards <= 52:
         decksLeft = 1
     else:
         decksLeft = int((numofcards / 52))
-    print(f"Start:{cnt,decksLeft}")
     if dealt == Cards.TWO or dealt == Cards.SEVEN:
         cnt += 0.5
     elif dealt == Cards.THREE or dealt == Cards.FOUR or dealt == Cards.SIX:
@@ -83,21 +86,53 @@ def cardcount(dealt,cnt):
         cnt -= 0.5
     elif dealt == Cards.A or dealt == Cards.TEN or dealt == Cards.J or dealt == Cards.Q or dealt == Cards.K:
         cnt -= 1
-    print(f"End:{cnt,decksLeft}")
     return float(cnt)/float(decksLeft),cnt
 
-def dothathing():
+def dothathing(urcount):
     total=0
+    parts={}
     for x in deck:
-        if x.value["value"][0] <= 21-yourcount:
-            print(f"| {x.name} |", end="")
+        if x.value["value"][0] <= 21-urcount:
+            parts.update({x:(deck[x]/numofcards)*100})
+            print(f"| {x.name},{round(parts[x],2)}% |", end="")
             total+=deck[x]
-    print(f"Total number of viable Cards left {total}")
+    parts.update({'global':(total/numofcards)*100})
+    
+    print(f"Total number of viable Cards left {total},{ round(parts['global'],2)}%")
+    return parts
 
+def doTheSplit (yourhandz):
+    if yourhandz[0] == yourhandz[1]:
+        if yourhandz[0] == Cards.A or yourhandz[0] == Cards.EIGHT:
+            print("Split That BITCH")
+            return True
+    return False
+
+def doThatBet(cardcnt):
+    if cardcnt >= 2 and cardcnt<3:
+        print("BET THE MAX-20")
+    elif cardcnt >= 3:
+        print("BET THE MAX")
+    else:
+        print("BET 2 GreenBacks")
+def doThatMove(partz,cardcnt):
+    return partz['global'] >= 50 or cardcnt>2.5
+
+def doubleThatDown(urhand, dealerzhand, cardcnt):
+    if(dealerzhand==Cards.A): return
+    
+    urcount=sum([x.value["value"][0] for x in yourhand])
+    highcount = sum([x.value["value"][len(x.value["value"])-1] for x in yourhand])
+    if((urcount == 11 or highcount==11) and cardcnt >= 2):
+        print("DOUBLE DOWN")
+    if (len([x for x in urhand if x == Cards.A]) != 0 and highcount>=16 and highcount<=17):
+        print("DOUBLE DOWN!")
+    
+    
+        
+    
 #update the deck with the cards drawn
 def updatedeck(cards,numcards):
-    CRED = '\033[91m'
-    CEND = '\033[0m'
     if isinstance(cards, list):
         numcards-=len(cards)
         for x in cards:
@@ -107,15 +142,16 @@ def updatedeck(cards,numcards):
         numcards-=1
         deck[cards]-=1
         if deck[cards]<0:print(f"{CRED}WARNING: {cards.name} is less than 0{CEND}")
-        
+      
     print(f"Number of Cards left {numcards}")
 
     return numcards
-    
 
 while True: #Round Loop
+    doThatBet(that)
     while True: #input error check
         temp = input("Initial User Cards: ").split()
+        
         if(all(x in [member.name for member in Cards] for x in temp)):
             yourhand=cards(temp)
             break
@@ -123,16 +159,19 @@ while True: #Round Loop
     for x in yourhand:
         that,count=cardcount(x,count)
     yourcount=sum([x.value["value"][0] for x in yourhand])
-    dothathing()
+    if (yourcount == 21 or sum([x.value["value"][len(x.value["value"])-1]for x in yourhand])==21):
+        print("WE WIN")
+        continue
     while True:   #input error check
         temp= input("Initial Dealer Card: ")
         if temp in [member.name for member in Cards]:
-            dealershand=cards(temp)
+            dealershand=[cards(temp)]
             break
 
     numofcards=updatedeck(dealershand,numofcards)
-    that,count=cardcount(dealershand,count)
-    dealercount=dealershand.value["value"][0]
+    for x in dealershand:
+        that, count = cardcount(x, count)
+    dealercount = sum([x.value["value"][0] for x in dealershand])
     other=[]
     while True:   #input error check
         temp = input("Other Cards: ").split()
@@ -143,5 +182,91 @@ while True: #Round Loop
     numofcards=updatedeck(other,numofcards)
     for x in other:
         that,count=cardcount(x,count)
+    yourparts = dothathing(yourcount)
+    doubleThatDown(yourhand,dealershand,that)
+    Split=doTheSplit(yourhand)
+    if(Split):
+        Splithand=[yourhand[0]]
+        Splitcount = sum([x.value["value"][0] for x in Splithand])
+        Splitparts = dothathing(Splitcount)
+        yourhand=[yourhand[0]]
+        yourcount = sum([x.value["value"][0] for x in yourhand])
+        yourparts = dothathing(yourcount)
     print(f"The advantage we have is {that}")
     # cardcount(dealt)
+    while doThatMove(yourparts, that) and yourcount < 21 and sum([x.value["value"][len(x.value["value"])-1] for x in yourhand]) < 17:
+        print("hit")
+        while True:  # input error check
+            temp = input("Your Card: ")
+            if temp in [member.name for member in Cards]:
+                temp = cards(temp)
+                break
+            
+        numofcards=updatedeck(temp,numofcards)
+        that,count=cardcount(temp,count)
+        yourhand+=[temp]
+        yourcount=sum([x.value["value"][0] for x in yourhand])
+        yourparts = dothathing(yourcount)
+    print('stand')
+    if (Split):
+        while doThatMove(Splitparts, that) and Splitcount<21 and sum([x.value["value"][len(x.value["value"])-1] for x in Splithand])<17:
+            print("hit")
+            while True:  # input error check
+                temp = input("Your Other Card: ")
+                if temp in [member.name for member in Cards]:
+                    temp = cards(temp)
+                    break
+
+            numofcards = updatedeck(temp, numofcards)
+            that, count = cardcount(temp, count)
+            Splithand += [temp]
+            Splitcount = sum([x.value["value"][0] for x in Splithand])
+            Splitparts = dothathing(Splitcount)
+        print('stand')
+    other = []
+    while True:  # input error check
+        temp = input("Other Cards: ").split()
+        if (all(x in [member.name for member in Cards] for x in temp)):
+            other = cards(temp)
+            break
+
+    numofcards = updatedeck(other, numofcards)
+    for x in other:
+        that, count = cardcount(x, count)
+
+    while True:  # input error check
+        temp = input("Dealer Cards: ").split()
+        if (all(x in [member.name for member in Cards] for x in temp)):
+            dealershand += cards(temp)
+            break
+
+    numofcards = updatedeck(dealershand, numofcards)
+    for x in dealershand:
+        that, count = cardcount(x, count)
+    dealercount = sum([x.value["value"][0] for x in dealershand])
+
+    print("First hand: ",end="")
+    highcount = sum([x.value["value"][len(x.value["value"])-1]for x in yourhand])
+    if yourcount == 21 or highcount == 21:
+        print("haha I won, be gone loser")
+    elif (yourcount > dealercount and yourcount < 21) or (highcount > dealercount and highcount < 21):
+        print("I WOOOOOOOOOON _x69x_")
+    elif yourcount == dealercount or highcount == dealercount:
+        print("Tie like a shoelace")
+    else:
+        print("shit Ive busted")
+    
+    if(Split):
+        highcount = sum([x.value["value"][len(x.value["value"])-1]for x in Splithand])
+        print("Second hand: ", end="")
+        if Splitcount == 21 or highcount == 21:
+            print("haha I won, be gone loser")
+        elif (Splitcount > dealercount and Splitcount < 21) or (highcount > dealercount and highcount < 21):
+            print("I WOOOOOOOOOON _x69x_")
+        elif Splitcount == dealercount or highcount == dealercount:
+            print("Tie like a shoelace")
+        else:
+            print("shit Ive busted")
+
+        
+        
