@@ -162,16 +162,7 @@ while True: #Round Loop
     if (yourcount == 21 or sum([x.value["value"][len(x.value["value"])-1]for x in yourhand])==21):
         print("WE WIN")
         continue
-    while True:   #input error check
-        temp= input("Initial Dealer Card: ")
-        if temp in [member.name for member in Cards]:
-            dealershand=[cards(temp)]
-            break
 
-    numofcards=updatedeck(dealershand,numofcards)
-    for x in dealershand:
-        that, count = cardcount(x, count)
-    dealercount = sum([x.value["value"][0] for x in dealershand])
     other=[]
     while True:   #input error check
         temp = input("Other Cards: ").split()
@@ -182,6 +173,17 @@ while True: #Round Loop
     numofcards=updatedeck(other,numofcards)
     for x in other:
         that,count=cardcount(x,count)
+
+    while True:   #input error check
+        temp= input("Initial Dealer Card: ")
+        if temp in [member.name for member in Cards]:
+            dealershand=[cards(temp)]
+            break
+    numofcards=updatedeck(dealershand,numofcards)
+    for x in dealershand:
+        that, count = cardcount(x, count)
+    dealercount = sum([x.value["value"][0] for x in dealershand])
+
     yourparts = dothathing(yourcount)
     doubleThatDown(yourhand,dealershand,that)
     Split=doTheSplit(yourhand)
