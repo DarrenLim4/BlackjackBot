@@ -1,7 +1,6 @@
 import numpy as np
 from enum import Enum
 
-global numofcards
 CRED = '\033[91m'
 CEND = '\033[0m'
 print(f'{CRED}I am __Xx_LIMDestroyer69_xX__ and I am here to Destroy you!{CEND}')
@@ -70,23 +69,24 @@ dealercount=0
 # When you see an 8: Do nothing(Worth 0)
 # When you see a 2 or 7: Add 0.5 to your running count
 # When you see a 3, 4, 5, or 6: Add 1 to your running count
-def cardcount(dealt,cnt):
-    decksLeft=0
-    if numofcards <= 52:
-        decksLeft = 1
-    else:
-        decksLeft = int((numofcards / 52))
-    if dealt == Cards.TWO or dealt == Cards.SEVEN:
-        cnt += 0.5
-    elif dealt == Cards.THREE or dealt == Cards.FOUR or dealt == Cards.SIX:
-        cnt += 1
-    elif dealt == Cards.FIVE:
-        cnt += 1.5
-    elif dealt == Cards.NINE:
-        cnt -= 0.5
-    elif dealt == Cards.A or dealt == Cards.TEN or dealt == Cards.J or dealt == Cards.Q or dealt == Cards.K:
-        cnt -= 1
-    return float(cnt)/float(decksLeft),cnt
+
+# def cardcount(dealt,cnt):
+#     decksLeft=0
+    # if numofcards <= 52:
+    #     decksLeft = 1
+    # else:
+        #decksLeft = int((numofcards / 52))
+    # if dealt == Cards.TWO or dealt == Cards.SEVEN:
+    #     cnt += 0.5
+    # elif dealt == Cards.THREE or dealt == Cards.FOUR or dealt == Cards.SIX:
+    #     cnt += 1
+    # elif dealt == Cards.FIVE:
+    #     cnt += 1.5
+    # elif dealt == Cards.NINE:
+    #     cnt -= 0.5
+    # elif dealt == Cards.A or dealt == Cards.TEN or dealt == Cards.J or dealt == Cards.Q or dealt == Cards.K:
+    #     cnt -= 1
+    # return float(cnt)/float(decksLeft),cnt
 
 def dothathing(urcount):
     total=0
@@ -109,14 +109,14 @@ def doTheSplit (yourhandz):
     return False
 
 def doThatBet(cardcnt):
-    if cardcnt >= 2 and cardcnt<3:
+    if cardcnt >= 2:
         print("BET THE MAX-20")
     elif cardcnt >= 3:
         print("BET THE MAX")
     else:
         print("BET 2 GreenBacks")
 def doThatMove(partz,cardcnt):
-    return partz['global'] >= 50 or cardcnt>2.5
+    return partz['global'] >= 50
 
 def doubleThatDown(urhand, dealerzhand, cardcnt):
     if(dealerzhand==Cards.A): return
@@ -132,20 +132,19 @@ def doubleThatDown(urhand, dealerzhand, cardcnt):
         
     
 #update the deck with the cards drawn
-def updatedeck(cards,numcards):
+def updatedeck(cards):
+    global numofcards
     if isinstance(cards, list):
-        numcards-=len(cards)
+        numofcards-=len(cards)
         for x in cards:
             deck[x]-=1
             if deck[x]<0:print(f"{CRED}WARNING: {x.name} is less than 0{CEND}")
     else:
-        numcards-=1
+        numofcards-=1
         deck[cards]-=1
         if deck[cards]<0:print(f"{CRED}WARNING: {cards.name} is less than 0{CEND}")
       
-    print(f"Number of Cards left {numcards}")
-
-    return numcards
+    print(f"Number of Cards left {numofcards}")
 
 while True: #Round Loop
     doThatBet(that)
@@ -155,9 +154,9 @@ while True: #Round Loop
         if(all(x in [member.name for member in Cards] for x in temp)):
             yourhand=cards(temp)
             break
-    numofcards=updatedeck(yourhand,numofcards)
-    for x in yourhand:
-        that,count=cardcount(x,count)
+    updatedeck(yourhand)
+    # for x in yourhand:
+    #     that,count=cardcount(x,count)
     yourcount=sum([x.value["value"][0] for x in yourhand])
     if (yourcount == 21 or sum([x.value["value"][len(x.value["value"])-1]for x in yourhand])==21):
         print("WE WIN")
@@ -170,18 +169,18 @@ while True: #Round Loop
             other=cards(temp)
             break
     
-    numofcards=updatedeck(other,numofcards)
-    for x in other:
-        that,count=cardcount(x,count)
+    updatedeck(other)
+    # for x in other:
+    #     that,count=cardcount(x,count)
 
     while True:   #input error check
         temp= input("Initial Dealer Card: ")
         if temp in [member.name for member in Cards]:
             dealershand=[cards(temp)]
             break
-    numofcards=updatedeck(dealershand,numofcards)
-    for x in dealershand:
-        that, count = cardcount(x, count)
+    updatedeck(dealershand)
+    # for x in dealershand:
+    #     that, count = cardcount(x, count)
     dealercount = sum([x.value["value"][0] for x in dealershand])
 
     yourparts = dothathing(yourcount)
@@ -194,7 +193,7 @@ while True: #Round Loop
         yourhand=[yourhand[0]]
         yourcount = sum([x.value["value"][0] for x in yourhand])
         yourparts = dothathing(yourcount)
-    print(f"The advantage we have is {that}")
+    # print(f"The advantage we have is {that}")
     # cardcount(dealt)
     while doThatMove(yourparts, that) and yourcount < 21 and sum([x.value["value"][len(x.value["value"])-1] for x in yourhand]) < 17:
         print("hit")
@@ -204,8 +203,8 @@ while True: #Round Loop
                 temp = cards(temp)
                 break
             
-        numofcards=updatedeck(temp,numofcards)
-        that,count=cardcount(temp,count)
+        updatedeck(temp)
+        # that,count=cardcount(temp,count)
         yourhand+=[temp]
         yourcount=sum([x.value["value"][0] for x in yourhand])
         yourparts = dothathing(yourcount)
@@ -219,8 +218,8 @@ while True: #Round Loop
                     temp = cards(temp)
                     break
 
-            numofcards = updatedeck(temp, numofcards)
-            that, count = cardcount(temp, count)
+            updatedeck(temp)
+            #that, count = cardcount(temp, count)
             Splithand += [temp]
             Splitcount = sum([x.value["value"][0] for x in Splithand])
             Splitparts = dothathing(Splitcount)
@@ -232,9 +231,9 @@ while True: #Round Loop
             other = cards(temp)
             break
 
-    numofcards = updatedeck(other, numofcards)
-    for x in other:
-        that, count = cardcount(x, count)
+    updatedeck(other)
+    # for x in other:
+    #     that, count = cardcount(x, count)
 
     while True:  # input error check
         temp = input("Dealer Cards: ").split()
@@ -242,9 +241,9 @@ while True: #Round Loop
             dealershand += cards(temp)
             break
 
-    numofcards = updatedeck(dealershand, numofcards)
-    for x in dealershand:
-        that, count = cardcount(x, count)
+    updatedeck(dealershand)
+    # for x in dealershand:
+    #     that, count = cardcount(x, count)
     dealercount = sum([x.value["value"][0] for x in dealershand])
 
     print("First hand: ",end="")
