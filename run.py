@@ -123,6 +123,8 @@ def doubleThatDown(urhand, dealerzhand, cardcnt):
     
     urcount=sum([x.value["value"][0] for x in yourhand])
     highcount = sum([x.value["value"][len(x.value["value"])-1] for x in yourhand])
+    #change the cardcnt to % based on having a sum > 18 [7,8,9,10,J,Q,K]
+    #fix the loop
     if((urcount == 11 or highcount==11) and cardcnt >= 2):
         print("DOUBLE DOWN")
     if (len([x for x in urhand if x == Cards.A]) != 0 and highcount>=16 and highcount<=17):
