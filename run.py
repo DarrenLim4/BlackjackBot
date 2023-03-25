@@ -1,7 +1,16 @@
 from enum import Enum
 
+#idea list:
 # create a loop that prompt the user to say how many players are at the table
+#create a risk averison equation (low, medium and high) 
 
+
+#to do list
+#test/fix main loop
+# finish highcard function
+# double Ace case
+#insurance?
+#run tests and see how to integrate cardcount to the risk %
 CRED = '\033[91m'
 CEND = '\033[0m'
 ONEHAND="Your Card"
@@ -150,6 +159,7 @@ def getThatHighCard(lower):
 def doThatMove(partz):
     #true= hit
     #false = stand
+    #two Ace contidion
     return partz['global'] >= 50 and getThatHighCard()>= 20
 
 def doubleThatDown(urhand, dealerzhand, cardcnt):
