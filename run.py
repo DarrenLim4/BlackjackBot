@@ -4,6 +4,8 @@ from enum import Enum
 
 CRED = '\033[91m'
 CEND = '\033[0m'
+ONEHAND="Your Card"
+SPLITHAND="Your First Hand"
 print(f'{CRED}I am __Xx_LIMDestroyer69_xX__ and I am here to Destroy you!{CEND}')
 class Cards(Enum):
     A = {'card': 1, 'value': [1,11]}
@@ -63,6 +65,7 @@ yourparts = 0
 dealershand = []
 dealercount=0
 tablemin=2
+handprint=ONEHAND
 
 
 # Start with a count of 0
@@ -140,14 +143,14 @@ def doThatBet():
     else:
         print("BET 2")
 
-def getThatHighCard():
-    # math for figuring out likehood of getting card sum 17-21
-    return 4
+def getThatHighCard(lower):
+    # math for figuring out likehood of getting card sum lower-21
+    return 100
 
 def doThatMove(partz):
     #true= hit
     #false = stand
-    return partz['global'] >= 50 and getThatHighCard()> 20
+    return partz['global'] >= 50 and getThatHighCard()>= 20
 
 def doubleThatDown(urhand, dealerzhand, cardcnt):
     if(dealerzhand==Cards.A): return
@@ -156,11 +159,14 @@ def doubleThatDown(urhand, dealerzhand, cardcnt):
     highcount = sum([x.value["value"][len(x.value["value"])-1] for x in yourhand])
     #change the cardcnt to % based on having a sum > 18 [7,8,9,10,J,Q,K]
     #fix the loop
-    if((urcount == 11 or highcount==11) and cardcnt >= 2):
+    if((urcount == 11 or highcount==11)and getThatHighCard()>40):
         print("DOUBLE DOWN")
         return True
     if (len([x for x in urhand if x == Cards.A]) != 0 and highcount>=16 and highcount<=17):
         print("DOUBLE DOWN!")
+        return True
+    if(getThatHighCard(18)>50):
+        print("DOUBLE DOWN!!")
         return True
     return False
     
@@ -223,17 +229,15 @@ while True: #Round Loop
     doubled=doubleThatDown(yourhand,dealershand,that)
     Split=doTheSplit()
     if(Split):
+        handprint=SPLITHAND
         Splithand=[yourhand[0]]
         Splitcount = sum([x.value["value"][0] for x in Splithand])
         Splitparts = dothathing(Splitcount)
         yourhand=[yourhand[0]]
         yourcount = sum([x.value["value"][0] for x in yourhand])
         yourparts = dothathing(yourcount)
-    # print(f"The advantage we have is {that}")
-    # cardcount(dealt)
-    if(doubled):
         while True:  # input error check
-            temp = input("Your Card: ")
+            temp = input(f"{handprint}(split): ")
             if temp in [member.name for member in Cards]:
                 temp = cards(temp)
                 break
@@ -243,9 +247,35 @@ while True: #Round Loop
         yourhand+=[temp]
         yourcount=sum([x.value["value"][0] for x in yourhand])
         yourparts = dothathing(yourcount)
-        if(split):
+        if(Split):
             while True:  # input error check
-                temp = input("Your Other Card: ")
+                temp = input("Your second hand(split): ")
+                if temp in [member.name for member in Cards]:
+                    temp = cards(temp)
+                    break
+
+            updatedeck(temp)
+            #that, count = cardcount(temp, count)
+            Splithand += [temp]
+            Splitcount = sum([x.value["value"][0] for x in Splithand])
+            Splitparts = dothathing(Splitcount)
+    # print(f"The advantage we have is {that}")
+    # cardcount(dealt)
+    if(doubled):
+        while True:  # input error check
+            temp = input(f"{handprint}(double): ")
+            if temp in [member.name for member in Cards]:
+                temp = cards(temp)
+                break
+            
+        updatedeck(temp)
+        # that,count=cardcount(temp,count)
+        yourhand+=[temp]
+        yourcount=sum([x.value["value"][0] for x in yourhand])
+        yourparts = dothathing(yourcount)
+        if(Split):
+            while True:  # input error check
+                temp = input("Your Second hand(double): ")
                 if temp in [member.name for member in Cards]:
                     temp = cards(temp)
                     break
@@ -256,10 +286,11 @@ while True: #Round Loop
             Splitcount = sum([x.value["value"][0] for x in Splithand])
             Splitparts = dothathing(Splitcount)
     else:
-        while doThatMove(yourparts) and yourcount < 21 and sum([x.value["value"][len(x.value["value"])-1] for x in yourhand]) < 17:
+        print("hand",not (sum([x.value["value"][len(x.value["value"])-1] for x in yourhand])in[17,18,19,20,21]))
+        while doThatMove(yourparts) and yourcount < 21 and not (sum([x.value["value"][len(x.value["value"])-1] for x in yourhand])in[17,18,19,20,21]):
             print("hit")
             while True:  # input error check
-                temp = input("Your Card: ")
+                temp = input(f"{handprint}: ")
                 if temp in [member.name for member in Cards]:
                     temp = cards(temp)
                     break
@@ -270,11 +301,13 @@ while True: #Round Loop
             yourcount=sum([x.value["value"][0] for x in yourhand])
             yourparts = dothathing(yourcount)
         print('stand')
+        print("what's Split ", Split)
         if (Split):
-            while doThatMove(Splitparts) and Splitcount<21 and sum([x.value["value"][len(x.value["value"])-1] for x in Splithand])<17:
+            print("split", not (sum([x.value["value"][len(x.value["value"])-1] for x in Splithand])in[17,18,19,20,21]))
+            while doThatMove(Splitparts) and Splitcount<21 and not (sum([x.value["value"][len(x.value["value"])-1] for x in Splithand])in[17,18,19,20,21]):
                 print("hit")
                 while True:  # input error check
-                    temp = input("Your Other Card: ")
+                    temp = input("Your Second hand: ")
                     if temp in [member.name for member in Cards]:
                         temp = cards(temp)
                         break
