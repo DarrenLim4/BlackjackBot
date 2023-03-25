@@ -1,5 +1,6 @@
-import numpy as np
 from enum import Enum
+
+# create a loop that prompt the user to say how many players are at the table
 
 CRED = '\033[91m'
 CEND = '\033[0m'
@@ -61,6 +62,7 @@ yourcount=0
 yourparts = 0
 dealershand = []
 dealercount=0
+tablemin=2
 
 
 # Start with a count of 0
@@ -70,23 +72,31 @@ dealercount=0
 # When you see a 2 or 7: Add 0.5 to your running count
 # When you see a 3, 4, 5, or 6: Add 1 to your running count
 
-# def cardcount(dealt,cnt):
-#     decksLeft=0
-    # if numofcards <= 52:
-    #     decksLeft = 1
-    # else:
-        #decksLeft = int((numofcards / 52))
-    # if dealt == Cards.TWO or dealt == Cards.SEVEN:
-    #     cnt += 0.5
-    # elif dealt == Cards.THREE or dealt == Cards.FOUR or dealt == Cards.SIX:
-    #     cnt += 1
-    # elif dealt == Cards.FIVE:
-    #     cnt += 1.5
-    # elif dealt == Cards.NINE:
-    #     cnt -= 0.5
-    # elif dealt == Cards.A or dealt == Cards.TEN or dealt == Cards.J or dealt == Cards.Q or dealt == Cards.K:
-    #     cnt -= 1
-    # return float(cnt)/float(decksLeft),cnt
+def cardcount(dealt,cnt):
+    decksLeft=0
+    if numofcards <= 52:
+        decksLeft = 1
+    else:
+        decksLeft = int((numofcards / 52))
+    if dealt == Cards.A:
+        cnt -= .6
+    elif dealt == Cards.TWO:
+        cnt += .37
+    elif dealt == Cards.THREE:
+        cnt += .45
+    elif dealt == Cards.FOUR:
+        cnt += .52
+    elif dealt == Cards.FIVE:
+        cnt += .70
+    elif dealt == Cards.SIX:
+        cnt += .46
+    elif dealt == Cards.SEVEN:
+        cnt += .27
+    elif dealt == Cards.NINE:
+        cnt -= .17
+    elif dealt == Cards.TEN or dealt == Cards.J or dealt == Cards.Q or dealt == Cards.K:
+        cnt -= .50
+    return int(float(cnt)/float(decksLeft)),cnt
 
 def dothathing(urcount):
     total=0
@@ -101,22 +111,43 @@ def dothathing(urcount):
     print(f"Total number of viable Cards left {total},{ round(parts['global'],2)}%")
     return parts
 
-def doTheSplit (yourhandz):
-    if yourhandz[0] == yourhandz[1]:
-        if yourhandz[0] == Cards.A or yourhandz[0] == Cards.EIGHT:
-            print("Split That BITCH")
+def doTheSplit ():
+    global yourhand
+    if yourhand[0] == yourhand[1]:
+        if yourhand[0] == Cards.A or yourhand[0] == Cards.EIGHT:
+            print("Split That Hand")
             return True
     return False
 
-def doThatBet(cardcnt):
-    if cardcnt >= 2:
-        print("BET THE MAX-20")
-    elif cardcnt >= 3:
+def doThatBet():
+    global that
+    if that >= 10:
         print("BET THE MAX")
+    elif that >= 8 and that <= 9:
+        print(f"BET THE {24*tablemin}")
+    elif that >=7 and that <=8:
+        print(f"BET THE {20*tablemin}")
+    elif that >=6 and that <=7:
+        print(f"BET THE {16*tablemin}")
+    elif that >=5 and that <=6:
+        print(f"BET THE {12*tablemin}")
+    elif that >=4 and that <=5:
+        print(f"BET THE {8*tablemin}")
+    elif that >=3 and that <=4:
+        print(f"BET THE {4*tablemin}")
+    elif that >=2 and that <=3:
+        print(f"BET THE {2*tablemin}")
     else:
-        print("BET 2 GreenBacks")
-def doThatMove(partz,cardcnt):
-    return partz['global'] >= 50
+        print("BET 2")
+
+def getThatHighCard():
+    # math for figuring out likehood of getting card sum 17-21
+    return 4
+
+def doThatMove(partz):
+    #true= hit
+    #false = stand
+    return partz['global'] >= 50 and getThatHighCard()> 20
 
 def doubleThatDown(urhand, dealerzhand, cardcnt):
     if(dealerzhand==Cards.A): return
@@ -127,8 +158,11 @@ def doubleThatDown(urhand, dealerzhand, cardcnt):
     #fix the loop
     if((urcount == 11 or highcount==11) and cardcnt >= 2):
         print("DOUBLE DOWN")
+        return True
     if (len([x for x in urhand if x == Cards.A]) != 0 and highcount>=16 and highcount<=17):
         print("DOUBLE DOWN!")
+        return True
+    return False
     
     
         
@@ -149,7 +183,7 @@ def updatedeck(cards):
     print(f"Number of Cards left {numofcards}")
 
 while True: #Round Loop
-    doThatBet(that)
+    doThatBet()
     while True: #input error check
         temp = input("Initial User Cards: ").split()
         
@@ -157,8 +191,8 @@ while True: #Round Loop
             yourhand=cards(temp)
             break
     updatedeck(yourhand)
-    # for x in yourhand:
-    #     that,count=cardcount(x,count)
+    for x in yourhand:
+        that,count=cardcount(x,count)
     yourcount=sum([x.value["value"][0] for x in yourhand])
     if (yourcount == 21 or sum([x.value["value"][len(x.value["value"])-1]for x in yourhand])==21):
         print("WE WIN")
@@ -172,8 +206,8 @@ while True: #Round Loop
             break
     
     updatedeck(other)
-    # for x in other:
-    #     that,count=cardcount(x,count)
+    for x in other:
+        that,count=cardcount(x,count)
 
     while True:   #input error check
         temp= input("Initial Dealer Card: ")
@@ -186,8 +220,8 @@ while True: #Round Loop
     dealercount = sum([x.value["value"][0] for x in dealershand])
 
     yourparts = dothathing(yourcount)
-    doubleThatDown(yourhand,dealershand,that)
-    Split=doTheSplit(yourhand)
+    doubled=doubleThatDown(yourhand,dealershand,that)
+    Split=doTheSplit()
     if(Split):
         Splithand=[yourhand[0]]
         Splitcount = sum([x.value["value"][0] for x in Splithand])
@@ -197,8 +231,7 @@ while True: #Round Loop
         yourparts = dothathing(yourcount)
     # print(f"The advantage we have is {that}")
     # cardcount(dealt)
-    while doThatMove(yourparts, that) and yourcount < 21 and sum([x.value["value"][len(x.value["value"])-1] for x in yourhand]) < 17:
-        print("hit")
+    if(doubled):
         while True:  # input error check
             temp = input("Your Card: ")
             if temp in [member.name for member in Cards]:
@@ -210,10 +243,7 @@ while True: #Round Loop
         yourhand+=[temp]
         yourcount=sum([x.value["value"][0] for x in yourhand])
         yourparts = dothathing(yourcount)
-    print('stand')
-    if (Split):
-        while doThatMove(Splitparts, that) and Splitcount<21 and sum([x.value["value"][len(x.value["value"])-1] for x in Splithand])<17:
-            print("hit")
+        if(split):
             while True:  # input error check
                 temp = input("Your Other Card: ")
                 if temp in [member.name for member in Cards]:
@@ -225,7 +255,36 @@ while True: #Round Loop
             Splithand += [temp]
             Splitcount = sum([x.value["value"][0] for x in Splithand])
             Splitparts = dothathing(Splitcount)
+    else:
+        while doThatMove(yourparts) and yourcount < 21 and sum([x.value["value"][len(x.value["value"])-1] for x in yourhand]) < 17:
+            print("hit")
+            while True:  # input error check
+                temp = input("Your Card: ")
+                if temp in [member.name for member in Cards]:
+                    temp = cards(temp)
+                    break
+                
+            updatedeck(temp)
+            # that,count=cardcount(temp,count)
+            yourhand+=[temp]
+            yourcount=sum([x.value["value"][0] for x in yourhand])
+            yourparts = dothathing(yourcount)
         print('stand')
+        if (Split):
+            while doThatMove(Splitparts) and Splitcount<21 and sum([x.value["value"][len(x.value["value"])-1] for x in Splithand])<17:
+                print("hit")
+                while True:  # input error check
+                    temp = input("Your Other Card: ")
+                    if temp in [member.name for member in Cards]:
+                        temp = cards(temp)
+                        break
+
+                updatedeck(temp)
+                #that, count = cardcount(temp, count)
+                Splithand += [temp]
+                Splitcount = sum([x.value["value"][0] for x in Splithand])
+                Splitparts = dothathing(Splitcount)
+            print('stand')
     other = []
     while True:  # input error check
         temp = input("Other Cards: ").split()
@@ -271,5 +330,4 @@ while True: #Round Loop
         else:
             print("shit Ive busted")
 
-        
-        
+    
