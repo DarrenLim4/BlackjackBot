@@ -367,26 +367,26 @@ while True: #Round Loop
     print("First hand: ",end="")
     highcount = sum([x.value["value"][len(x.value["value"])-1]for x in yourhand])
     print("Round Done")
-    if yourcount == 21 or highcount == 21:
+    #if yourcount == 21 or highcount == 21:
         #print("haha I won, be gone loser")
-    elif (yourcount > dealercount and yourcount < 21) or (highcount > dealercount and highcount < 21):
+    #elif (yourcount > dealercount and yourcount < 21) or (highcount > dealercount and highcount < 21):
         #print("I WOOOOOOOOOON _x69x_")
-    elif yourcount == dealercount or highcount == dealercount:
+    #elif yourcount == dealercount or highcount == dealercount:
         #print("Tie like a shoelace")
-    else:
+    #else:
         #print("shit Ive busted")
     
     if(Split):
         highcount = sum([x.value["value"][len(x.value["value"])-1]for x in Splithand])
         print("Second hand: ", end="")
         print("Round Done")
-        if Splitcount == 21 or highcount == 21:
+        #if Splitcount == 21 or highcount == 21:
            # print("haha I won, be gone loser")
-        elif (Splitcount > dealercount and Splitcount < 21) or (highcount > dealercount and highcount < 21):
+        #elif (Splitcount > dealercount and Splitcount < 21) or (highcount > dealercount and highcount < 21):
             #print("I WOOOOOOOOOON _x69x_")
-        elif Splitcount == dealercount or highcount == dealercount:
+        #elif Splitcount == dealercount or highcount == dealercount:
             #print("Tie like a shoelace")
-        else:
+        #else:
             #print("shit Ive busted")
 
     
