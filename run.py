@@ -6,8 +6,6 @@ from enum import Enum
 
 
 #to do list
-#test/fix main loop
-# finish highcard function
 # double Ace case
 #insurance?
 #run tests and see how to integrate cardcount to the risk %
@@ -123,6 +121,14 @@ def dothathing(urcount):
     print(f"Total number of viable Cards left {total},{ round(parts['global'],2)}%")
     return parts
 
+def dothatotherthing(urcount,lower):
+    total=0
+    global numofcards
+    for x in deck:
+        if x.value["value"][0] <= 21-urcount and x.value["value"][0] >= lower-urcount:
+            total+=deck[x]
+    return total/numofcards
+
 def doTheSplit ():
     global yourhand
     if yourhand[0] == yourhand[1]:
@@ -153,26 +159,37 @@ def doThatBet():
         print("BET 2")
 
 def getThatHighCard(lower):
-    # math for figuring out likehood of getting card sum lower-21
-    return 100
+    # math for figuring out likehood of getting card sum lower to 21
+    # 1. get the sum of the cards in your hand
+    isthatlikely = 0
+    global yourhand
+    urcount=sum([x.value["value"][0] for x in yourhand])
+    highcount = sum([x.value["value"][len(x.value["value"])-1] for x in yourhand])
+    low=dothatotherthing(urcount,lower)
+    high=dothatotherthing(highcount,lower)
+    if highcount == urcount:
+        return low*100
+    else:
+        return (low+high)*50
 
 def doThatMove(partz):
     #true= hit
     #false = stand
     #two Ace contidion
-    return partz['global'] >= 50 and getThatHighCard()>= 20
+    return partz['global'] >= 50 and getThatHighCard(17)>= 20
 
-def doubleThatDown(urhand, dealerzhand, cardcnt):
-    if(dealerzhand==Cards.A): return
+def doubleThatDown(dealerzhand, cardcnt):
+    global yourhand
+    if(dealerzhand==Cards.A): return False
     
     urcount=sum([x.value["value"][0] for x in yourhand])
     highcount = sum([x.value["value"][len(x.value["value"])-1] for x in yourhand])
     #change the cardcnt to % based on having a sum > 18 [7,8,9,10,J,Q,K]
     #fix the loop
-    if((urcount == 11 or highcount==11)and getThatHighCard()>40):
+    if((urcount == 11 or highcount==11)and getThatHighCard(17)>40):
         print("DOUBLE DOWN")
         return True
-    if (len([x for x in urhand if x == Cards.A]) != 0 and highcount>=16 and highcount<=17):
+    if (len([x for x in yourhand if x == Cards.A]) != 0 and highcount>=16 and highcount<=17):
         print("DOUBLE DOWN!")
         return True
     if(getThatHighCard(18)>50):
@@ -236,7 +253,7 @@ while True: #Round Loop
     dealercount = sum([x.value["value"][0] for x in dealershand])
 
     yourparts = dothathing(yourcount)
-    doubled=doubleThatDown(yourhand,dealershand,that)
+    doubled=doubleThatDown(dealershand,that)
     Split=doTheSplit()
     if(Split):
         handprint=SPLITHAND
@@ -296,7 +313,6 @@ while True: #Round Loop
             Splitcount = sum([x.value["value"][0] for x in Splithand])
             Splitparts = dothathing(Splitcount)
     else:
-        print("hand",not (sum([x.value["value"][len(x.value["value"])-1] for x in yourhand])in[17,18,19,20,21]))
         while doThatMove(yourparts) and yourcount < 21 and not (sum([x.value["value"][len(x.value["value"])-1] for x in yourhand])in[17,18,19,20,21]):
             print("hit")
             while True:  # input error check
@@ -311,7 +327,6 @@ while True: #Round Loop
             yourcount=sum([x.value["value"][0] for x in yourhand])
             yourparts = dothathing(yourcount)
         print('stand')
-        print("what's Split ", Split)
         if (Split):
             print("split", not (sum([x.value["value"][len(x.value["value"])-1] for x in Splithand])in[17,18,19,20,21]))
             while doThatMove(Splitparts) and Splitcount<21 and not (sum([x.value["value"][len(x.value["value"])-1] for x in Splithand])in[17,18,19,20,21]):
