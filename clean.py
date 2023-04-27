@@ -13,6 +13,7 @@ CRED = '\033[91m'
 CEND = '\033[0m'
 ONEHAND="Your Card"
 SPLITHAND="Your First Hand"
+print(f'{CRED}I am __Xx_LIMDestroyer69_xX__ and I am here to Destroy you!{CEND}')
 class Cards(Enum):
     A = {'card': 1, 'value': [1,11]}
     TWO = {'card': 2, 'value': [2]}
@@ -364,29 +365,6 @@ while True: #Round Loop
     #     that, count = cardcount(x, count)
     dealercount = sum([x.value["value"][0] for x in dealershand])
 
-    print("First hand: ",end="")
-    highcount = sum([x.value["value"][len(x.value["value"])-1]for x in yourhand])
-    print("Round Done")
-    #if yourcount == 21 or highcount == 21:
-        #print("haha I won, be gone loser")
-    #elif (yourcount > dealercount and yourcount < 21) or (highcount > dealercount and highcount < 21):
-        #print("I WOOOOOOOOOON _x69x_")
-    #elif yourcount == dealercount or highcount == dealercount:
-        #print("Tie like a shoelace")
-    #else:
-        #print("shit Ive busted")
-    
-    if(Split):
-        highcount = sum([x.value["value"][len(x.value["value"])-1]for x in Splithand])
-        print("Second hand: ", end="")
-        print("Round Done")
-        #if Splitcount == 21 or highcount == 21:
-           # print("haha I won, be gone loser")
-        #elif (Splitcount > dealercount and Splitcount < 21) or (highcount > dealercount and highcount < 21):
-            #print("I WOOOOOOOOOON _x69x_")
-        #elif Splitcount == dealercount or highcount == dealercount:
-            #print("Tie like a shoelace")
-        #else:
-            #print("shit Ive busted")
+        
 
     
