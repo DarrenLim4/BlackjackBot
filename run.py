@@ -30,8 +30,8 @@ class Cards(Enum):
     K = {'card': 13, 'value': [10]}
 
 
-def __getitem__(self, item):
-    return self._data['value']
+    def __getitem__(self, item):
+        return self._data['value']
 
 def cards(card):
     #match the card name string to the enum
@@ -121,7 +121,8 @@ def dothathing(urcount):
     print(f"Total number of viable Cards left {total},{ round(parts['global'],2)}%")
     return parts
 
-def dothatotherthing(urcount,lower):
+#Gets the probability of getting a card that is less than 21 and above the lower bound
+def FindClampedProb(urcount,lower):
     total=0
     global numofcards
     for x in deck:
@@ -165,8 +166,8 @@ def getThatHighCard(lower):
     global yourhand
     urcount=sum([x.value["value"][0] for x in yourhand])
     highcount = sum([x.value["value"][len(x.value["value"])-1] for x in yourhand])
-    low=dothatotherthing(urcount,lower)
-    high=dothatotherthing(highcount,lower)
+    low=FindClampedProb(urcount,lower)
+    high=FindClampedProb(highcount,lower)
     if highcount == urcount:
         return low*100
     else:
