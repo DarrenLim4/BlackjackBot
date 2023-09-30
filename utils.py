@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 import random
 
-
 @dataclass
 class Card:
     name: str
@@ -41,7 +40,4 @@ class Deck:
     
     def __str__(self):
         #returns how many of each type of card is in the deck
-        return str(self.cards)
-                    
-deck = Deck()
-print(deck)
+        return [f"{card_type}: {self.cards[card_type]['count']} " for card_type in self.cards].__str__().replace("'","").replace("[","").replace("]","").replace(",","|")
