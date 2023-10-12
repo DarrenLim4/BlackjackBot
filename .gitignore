@@ -23,5 +23,8 @@
 hs_err_pid*
 replay_pid*
 
-#certain files that we do not want committed yet can be added here
+#.csv files
+*.csv
+
+#certain files that are not stable enough to be deployed
 Logging.java
