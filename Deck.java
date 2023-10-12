@@ -19,35 +19,60 @@ public class Deck {
      */
     public Deck(int size) {
         this.shoe = new ArrayList<Card>();
-
+        this.cardsLeft = new int[13];
         // add the correct number of cards to the shoe
         for (int i = 0; i < 4 * size; i++) {
-            this.shoe.add(new Card("Ace"));
-            this.cardsLeft[index] = cardsLeft[index] + 1;
-            this.shoe.add(new Card("2"));
-            this.cardsLeft[index] = cardsLeft[index] + 1;
-            this.shoe.add(new Card("3"));
-            this.cardsLeft[index] = cardsLeft[index] + 1;
-            this.shoe.add(new Card("4"));
-            this.cardsLeft[index] = cardsLeft[index] + 1;
-            this.shoe.add(new Card("5"));
-            this.cardsLeft[index] = cardsLeft[index] + 1;
-            this.shoe.add(new Card("6"));
-            this.cardsLeft[index] = cardsLeft[index] + 1;
-            this.shoe.add(new Card("7"));
-            this.cardsLeft[index] = cardsLeft[index] + 1;
-            this.shoe.add(new Card("8"));
-            this.cardsLeft[index] = cardsLeft[index] + 1;
-            this.shoe.add(new Card("9"));
-            this.cardsLeft[index] = cardsLeft[index] + 1;
-            this.shoe.add(new Card("10"));
-            this.cardsLeft[index] = cardsLeft[index] + 1;
-            this.shoe.add(new Card("Jack"));
-            this.cardsLeft[index] = cardsLeft[index] + 1;
-            this.shoe.add(new Card("Queen"));
-            this.cardsLeft[index] = cardsLeft[index] + 1;
-            this.shoe.add(new Card("King"));
-            this.cardsLeft[index] = cardsLeft[index] + 1;
+            Card card = new Card("Ace");
+            this.shoe.add(card);
+            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
+
+            card = new Card("2");
+            this.shoe.add(card);
+            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
+
+            card = new Card("3");
+            this.shoe.add(card);
+            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
+
+            card = new Card("4");
+            this.shoe.add(card);
+            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
+
+            card = new Card("5");
+            this.shoe.add(card);
+            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
+
+            card = new Card("6");
+            this.shoe.add(card);
+            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
+
+            card = new Card("7");
+            this.shoe.add(card);
+            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
+
+            card = new Card("8");
+            this.shoe.add(card);
+            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
+
+            card = new Card("9");
+            this.shoe.add(card);
+            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
+
+            card = new Card("10");
+            this.shoe.add(card);
+            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
+
+            card = new Card("Jack");
+            this.shoe.add(card);
+            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
+            
+            card = new Card("Queen");
+            this.shoe.add(card);
+            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
+
+            card = new Card("King");
+            this.shoe.add(card);
+            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
         }
     }
 
