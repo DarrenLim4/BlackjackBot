@@ -26,5 +26,4 @@ replay_pid*
 #.csv files
 *.csv
 
-#certain files that are not stable enough to be deployed
-Logging.java
+#certain files that are not stable enough to be deployed should be logged here

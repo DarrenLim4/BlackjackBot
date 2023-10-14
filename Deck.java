@@ -21,6 +21,11 @@ public class Deck {
     public Deck(int numDecks) {
         this.shoe = new ArrayList<Card>();
         this.cardsLeft = new int[13];
+        if(numDecks < 1){
+            Logging.logToGroup("error", "Error: Invalid number of decks");
+            System.exit(1);
+        }
+        
         this.size = 52 * numDecks;
         // add the correct number of cards to the shoe
         for (int i = 0; i < 4 * numDecks; i++) {
@@ -78,6 +83,11 @@ public class Deck {
         }
     }
 
+    /**
+     * This function draws a card from the shoe.
+     * 
+     * @return The card that was drawn.
+     */
     public Card draw() {
         // draw a random card from the deck and return it
         Random rand = new Random();
@@ -88,6 +98,12 @@ public class Deck {
         return card;
     }
 
+    /**
+     * This function returns the number of cards left in the shoe.
+     * 
+     * @param card The card to get the index for.
+     * @return The number of cards left in the shoe.
+     */
     private int getIndexForCardsLeft(Card card) {
         int index = -1;
 
