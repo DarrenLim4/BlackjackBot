@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 
 public class Player {
-    private final int HIT = 0;
-    private final int STD = 1;
-    private final int DD = 2;
+    private static final int HIT = 0;
+    private static final int STD = 1;
+    private static final int DD = 2;
     // private final int SPT = 3;
     public ArrayList<Hand> hands;
     public boolean intialHand = true;
