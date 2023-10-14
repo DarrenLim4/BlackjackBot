@@ -21,7 +21,7 @@ public class Hand {
      * 
      * @param cards the cards to add to the hand
      */
-    public Hand(Card[] cards) {
+    public Hand(Card ...cards) {
         this.hand = new ArrayList<Card>();
 
         // Add the cards to the hand
@@ -29,7 +29,9 @@ public class Hand {
             this.hand.add(card);
         }
     }
-
+    public Card getCard(int index){
+        return hand.get(index);
+    }
     /**
      * Adds a card to the hand.
      * 
@@ -99,11 +101,6 @@ public class Hand {
      */
     @Override
     public String toString() {
-        String handString = "";
-
-        for (Card card : hand) {
-            handString += card.name + " ";
-        }
-        return handString + "\n";
+        return ""+hand;
     }
 }

@@ -11,78 +11,80 @@ public class Deck {
     public ArrayList<Card> shoe;
     public int[] cardsLeft;
     public int size;
+    
 
     /**
      * This constructor creates the shoe with a given number of decks.
      * 
      * @param size The number of decks to be used in the shoe.
      */
-    public Deck(int size) {
+    public Deck(int numDecks) {
         this.shoe = new ArrayList<Card>();
         this.cardsLeft = new int[13];
+        this.size = 52 * numDecks;
         // add the correct number of cards to the shoe
-        for (int i = 0; i < 4 * size; i++) {
+        for (int i = 0; i < 4 * numDecks; i++) {
             Card card = new Card("Ace");
             this.shoe.add(card);
-            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
+            this.cardsLeft[getIndexForCardsLeft(card)]++;
 
             card = new Card("2");
             this.shoe.add(card);
-            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
+            this.cardsLeft[getIndexForCardsLeft(card)]++;
 
             card = new Card("3");
             this.shoe.add(card);
-            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
+            this.cardsLeft[getIndexForCardsLeft(card)]++;
 
             card = new Card("4");
             this.shoe.add(card);
-            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
+            this.cardsLeft[getIndexForCardsLeft(card)]++;
 
             card = new Card("5");
             this.shoe.add(card);
-            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
+            this.cardsLeft[getIndexForCardsLeft(card)]++;
 
             card = new Card("6");
             this.shoe.add(card);
-            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
+            this.cardsLeft[getIndexForCardsLeft(card)]++;
 
             card = new Card("7");
             this.shoe.add(card);
-            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
+            this.cardsLeft[getIndexForCardsLeft(card)]++;
 
             card = new Card("8");
             this.shoe.add(card);
-            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
+            this.cardsLeft[getIndexForCardsLeft(card)]++;
 
             card = new Card("9");
             this.shoe.add(card);
-            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
+            this.cardsLeft[getIndexForCardsLeft(card)]++;
 
             card = new Card("10");
             this.shoe.add(card);
-            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
+            this.cardsLeft[getIndexForCardsLeft(card)]++;
 
             card = new Card("Jack");
             this.shoe.add(card);
-            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
+            this.cardsLeft[getIndexForCardsLeft(card)]++;
             
             card = new Card("Queen");
             this.shoe.add(card);
-            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
+            this.cardsLeft[getIndexForCardsLeft(card)]++;
 
             card = new Card("King");
             this.shoe.add(card);
-            this.cardsLeft[getIndexForCardsLeft(card)] = cardsLeft[getIndexForCardsLeft(card)] + 1;
+            this.cardsLeft[getIndexForCardsLeft(card)]++;
         }
     }
 
     public Card draw() {
         // draw a random card from the deck and return it
         Random rand = new Random();
-        int index = rand.nextInt(52 * size);
-        Card card = shoe.get(index);
-        this.shoe.remove(index);
+        int index = rand.nextInt(shoe.size());
+        Card card = shoe.remove(index);
         this.cardsLeft[getIndexForCardsLeft(card)]--;
+        this.size--;
         return card;
     }
 

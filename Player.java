@@ -6,6 +6,8 @@ public class Player {
     private static final int DD = 2;
     // private final int SPT = 3;
     public ArrayList<Hand> hands;
+    public int bet = 0;
+    public int difference = 0;
     public boolean intialHand = true;
 
     private final int[][] hardTable = {
@@ -68,6 +70,7 @@ public class Player {
 
     public int bet() {
         // return the amount of money to bet
+        bet = 2;
         return 2;
     }
 
@@ -81,5 +84,9 @@ public class Player {
 
             hands.get(0).hand.remove(1);
         }
+    }
+    @Override
+    public String toString() {
+        return "Player: " + hands;
     }
 }
