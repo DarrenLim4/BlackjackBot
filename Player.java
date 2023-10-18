@@ -55,9 +55,7 @@ public class Player {
             } else {
                 return hardTable[hands.get(hand).getValue()][DealerUpCard + 2];
             }
-        } else
-
-        {
+        } else {
             if (hands.get(hand).isSoft()) {
                 return softTable[hands.get(hand).getSoftValue()][DealerUpCard + 2] == DD ? HIT
                         : softTable[hands.get(hand).getSoftValue()][DealerUpCard + 2];

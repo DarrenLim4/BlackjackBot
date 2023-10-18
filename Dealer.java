@@ -30,7 +30,7 @@ public class Dealer {
                 player.bet *= 2;
                 break;
             default:
-                System.err.println("Invalid action: " + action);// change to log to error group
+                Logging.logToGroup("error", "Invalid action: " + action);// change to log to error group
                 System.exit(1);
                 break;
         }

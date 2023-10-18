@@ -29,6 +29,14 @@ public class Hand {
             this.hand.add(card);
         }
     }
+
+    /**
+     * Returns the card at the given index.
+     * 
+     * @param index the index of the card to get.
+     * 
+     * @return the card at the given index.
+     */
     public Card getCard(int index){
         return hand.get(index);
     }
@@ -44,7 +52,7 @@ public class Hand {
     /**
      * Returns the value of the hand.
      * 
-     * @return the value of the hand
+     * @return the value of the hand.
      */
     public int getValue() {
         int value = 0;
@@ -62,6 +70,7 @@ public class Hand {
     public int getSoftValue() {
         int value = 0;
         for (Card card : hand) {
+            // If the card is an ace, add 1 instead of 11
             value += card.value != 11 ? card.value : 1;
         }
         return value;
@@ -101,6 +110,6 @@ public class Hand {
      */
     @Override
     public String toString() {
-        return ""+hand;
+        return "" + hand;
     }
 }

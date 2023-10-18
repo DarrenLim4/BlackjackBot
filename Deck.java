@@ -148,6 +148,14 @@ public class Deck {
                 index = 12;
                 break;
         }
-        return index;
+
+        if(index == -1){
+            Logging.logToGroup("error", "Error: Invalid card name");
+            System.exit(1);
+            return -1;
+        } else {
+            return index;
+        }
+        
     }
 }
