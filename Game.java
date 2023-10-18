@@ -7,6 +7,9 @@ import java.util.ArrayList;
  * @Author Michael Plekan
  */
 public class Game{
+    private static final int HIT = 0;
+    private static final int STD = 1;
+    private static final int DD = 2;
     /**
      * This function runs the game.
      * 
@@ -14,8 +17,8 @@ public class Game{
      */
     public static void main(String[] args){
         ArrayList<Player> players = new ArrayList<Player>();
-        Dealer dealer = new Dealer();
-        Deck deck = new Deck(1);
+        Deck deck = new Deck(6);
+        Dealer dealer = new Dealer(deck);
 
         //get input from args and create players
         for(int i = 0; i < Integer.parseInt(args[0]); i++){
@@ -23,28 +26,66 @@ public class Game{
         }
 
         while(deck.size>(players.size()+1)*5){
+            //print
+            System.out.println("New Round");
             //deal cards
             for(Player player : players){
                 player.hands.add(new Hand(deck.draw(), deck.draw()));
             }
-            //get bets
+            //handle bets
             for(Player player : players){
                 player.bet();
             }
             //handle each players hand(s)
             for(Player player : players){
                 for(int i = 0; i < player.hands.size(); i++){
-                    while(player.decide(i, dealer.hand.getCard(0).value) != 0){
-                        dealer.handle(player.decide(i, dealer.hand.getCard(0).value), player, i, deck);
-                    }
+                    int action;
+                    do{
+                        action = player.decide(i,dealer.hand.getCard(0).value);
+                        dealer.handle(action, player, i, deck);
+                    }while(action != 1);
                 }
             }
             //handle dealer's hand
-
+            while(dealer.decide(deck) != STD);
             //determine winners
-            break;
-
-        }
+            for(Player player : players){
+                for(int i = 0; i < player.hands.size(); i++){
+                    if(player.hands.get(i).getValue() > 21){//player bust
+                        player.difference -= player.bet;
+                    }
+                    else if (dealer.hand.getValue() > 21){//dealer bust
+                        player.difference += player.bet;
+                    }
+                    else if(player.hands.get(i).getValue() == dealer.hand.getValue()){//push
+                        player.difference += 0;
+                    }
+                    else if(player.hands.get(i).getValue() > dealer.hand.getValue()){//player win
+                        player.difference += player.bet;
+                    }
+                    else if ( player.hands.get(i).getValue() < dealer.hand.getValue()){//player lose
+                        player.difference -= player.bet;
+                    }
+                    
+                    else{
+                        Logging.logToGroup("error","Error in determining winner");
+                        System.exit(1);
+                    }
+                }
+            }
+            //print results
+            for(Player player : players){
+                System.out.print(player.hands);
+                System.out.println(player.difference);
+            }
+            //reset hands and set intialHand to false
+            for(Player player : players){
+                player.hands = new ArrayList<Hand>();
+                player.intialHand = false;
+            }
+            //reset dealer hand
+            dealer.hand = new Hand(deck.draw(), deck.draw());
+        }//end of round
         System.out.println("Not enough cards in deck to play game"+players);
     }
 }

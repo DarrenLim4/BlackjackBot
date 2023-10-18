@@ -15,7 +15,10 @@ public class Dealer {
      * This function creates a new dealer
      */
     public Dealer() {
-        hand = new Hand();
+        this.hand = new Hand();
+    }
+    public Dealer(Deck deck) {
+        this.hand = new Hand(deck.draw(), deck.draw());
     }
     
     /**
@@ -26,6 +29,7 @@ public class Dealer {
      * @param deck The deck to be drawn from
      */
     public void handle(int action, Player player,int handIndex, Deck deck) {
+        // handle the action
         switch (action) {
             case HIT:
                 player.hands.get(handIndex).addCard(deck.draw());
@@ -48,7 +52,7 @@ public class Dealer {
      * 
      * @param deck The deck to be drawn from
      */
-    public void decide(Deck deck) {
+    public int decide(Deck deck) {
         // decide what to do
         // Dealer hit on soft 17 and below, stand on hard 17 and above
 
@@ -57,16 +61,19 @@ public class Dealer {
                 //if bust, then try the soft value
                 if(hand.getValue() > 21 && hand.getSoftValue() <= 17) {
                     hand.addCard(deck.draw());
-                } else if(hand.getValue() > 21 && hand.getSoftValue() > 17) {
-                    //stand
-                } else {
-                    hand.addCard(deck.draw());
-                }
+                    return HIT;
+                } 
+                //stand
+                return STD;
+                
             } 
-        } else {
-            if (hand.getValue() < 17) {
-                hand.addCard(deck.draw());
-            }
+        } 
+        if (hand.getValue() < 17) {
+            hand.addCard(deck.draw());
+            return HIT;
         }
+        //stand
+        return STD;
+    
     }
 }

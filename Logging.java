@@ -95,7 +95,9 @@ public class Logging {
                 checkArgsAndLog(group, minArgs, maxArgs, className, functionName, lineNumber, args);
                 break;
             default:
-                log("error",  className, functionName + " " + lineNumber, "Invalid group");
+                System.out.println("Error:  " + group + " is not a valid log group!");
+                System.out.flush();
+                System.exit(404);
         }
     }
 

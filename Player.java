@@ -18,10 +18,10 @@ public class Player {
 
     private final int[][] hardTable = {
             // Dealer's up card from 2 to Ace
-            { HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT }, // for value 3
-            { HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT }, // for value 4
-            { HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT }, // for value 5
-            { HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT }, // for value 6
+            { HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT }, // for value 3: index 0
+            { HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT }, // for value 4: index 1
+            { HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT }, // for value 5: index 2
+            { HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT }, // for value 6: index 3
             { HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT }, // for value 7
             { HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT, HIT }, // for value 8
             { HIT, DD, DD, DD, DD, HIT, HIT, HIT, HIT, HIT }, // for value 9
@@ -36,6 +36,7 @@ public class Player {
             { STD, STD, STD, STD, STD, STD, STD, STD, STD, STD }, // for value 18
             { STD, STD, STD, STD, STD, STD, STD, STD, STD, STD }, // for value 19
             { STD, STD, STD, STD, STD, STD, STD, STD, STD, STD }, // for value 20
+            { STD, STD, STD, STD, STD, STD, STD, STD, STD, STD } // for value 21: index 19
     };
 
     private final int[][] softTable = {
@@ -46,7 +47,8 @@ public class Player {
             { HIT, HIT, DD, DD, DD, HIT, HIT, HIT, HIT, HIT }, // for value A,6
             { STD, DD, DD, DD, DD, STD, STD, HIT, HIT, HIT }, // for value A,7
             { STD, STD, STD, STD, STD, STD, STD, STD, STD, STD }, // for value A,8
-            { STD, STD, STD, STD, STD, STD, STD, STD, STD, STD } // for value A,9
+            { STD, STD, STD, STD, STD, STD, STD, STD, STD, STD }, // for value A,9
+            { STD, STD, STD, STD, STD, STD, STD, STD, STD, STD }, // for value A,10
     };
 
     /**
@@ -67,20 +69,23 @@ public class Player {
      * @return The action to be taken.
      */
     public int decide(int hand, int DealerUpCard) {
+        if (hands.get(hand).getValue() > 21) {
+            return STD;
+        }
         // decide what to do
         if (intialHand) {
             if (hands.get(hand).isSoft()) {
-                return softTable[hands.get(hand).getValue()][DealerUpCard + 2];
+                return softTable[hands.get(hand).getSoftValue()-3][DealerUpCard - 2];
             } else {
-                return hardTable[hands.get(hand).getValue()][DealerUpCard + 2];
+                return hardTable[hands.get(hand).getValue()-3][DealerUpCard - 2];
             }
         } else {
             if (hands.get(hand).isSoft()) {
-                return softTable[hands.get(hand).getSoftValue()][DealerUpCard + 2] == DD ? HIT
-                        : softTable[hands.get(hand).getSoftValue()][DealerUpCard + 2];
+                return softTable[hands.get(hand).getSoftValue()-3][DealerUpCard - 2] == DD ? HIT
+                        : softTable[hands.get(hand).getSoftValue()-3][DealerUpCard - 2];
             } else {
-                return hardTable[hands.get(hand).getValue()][DealerUpCard + 2] == DD ? HIT
-                        : hardTable[hands.get(hand).getValue()][DealerUpCard + 2];
+                return hardTable[hands.get(hand).getValue()-3][DealerUpCard - 2] == DD ? HIT
+                        : hardTable[hands.get(hand).getValue()-3][DealerUpCard - 2];
             }
         }
     }
@@ -88,12 +93,10 @@ public class Player {
     /**
      * This function decides how much to bet.
      * 
-     * @return The amount to bet.
      */
-    public int bet() {
+    public void bet() {
         // return the amount of money to bet
         bet = 2;
-        return 2;
     }
 
     /**

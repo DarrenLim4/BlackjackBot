@@ -100,7 +100,15 @@ public class Hand {
      * @return if the hand is a soft hand.
      */
     public boolean isSoft() {
-        return hand.contains(new Card("Ace"));
+        //check each card in the hand to see if it is an ace
+        //if it is an ace, return true
+        //if not, return false
+        for (int i = 0; i < hand.size(); i++) {
+            if (hand.get(i).name.equals("Ace")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
