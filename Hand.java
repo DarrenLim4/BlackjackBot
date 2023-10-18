@@ -97,7 +97,7 @@ public class Hand {
     /**
      * Returns if the hand is a soft hand.
      * 
-     * @return if the hand is a soft hand
+     * @return if the hand is a soft hand.
      */
     public boolean isSoft() {
         return hand.contains(new Card("Ace"));

@@ -1,3 +1,10 @@
+
+/**
+ * This class represents the dealer in a game of blackjack
+ * 
+ * @since Fall 2023
+ * @author Michael Plekan
+ */
 public class Dealer {
     private static final int HIT = 0;
     private static final int STD = 1;

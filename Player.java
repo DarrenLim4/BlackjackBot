@@ -1,5 +1,11 @@
 import java.util.ArrayList;
 
+/**
+ * This class represents a player in the game.
+ * 
+ * @since Fall 2023
+ * @Author Michael Plekan
+ */
 public class Player {
     private static final int HIT = 0;
     private static final int STD = 1;
@@ -43,10 +49,23 @@ public class Player {
             { STD, STD, STD, STD, STD, STD, STD, STD, STD, STD } // for value A,9
     };
 
+    /**
+     * This function creates a new player
+     * 
+     * @param hand The hand to be added to the player
+     */
     public Player() {
         this.hands = new ArrayList<Hand>();
     }
 
+    /**
+     * This function decides if the player wants to hit, stand, double down, or split.
+     * 
+     * @param hand The hand to be decided upon.
+     * @param DealerUpCard The dealer's up card.
+     * 
+     * @return The action to be taken.
+     */
     public int decide(int hand, int DealerUpCard) {
         // decide what to do
         if (intialHand) {
@@ -66,12 +85,20 @@ public class Player {
         }
     }
 
+    /**
+     * This function decides how much to bet.
+     * 
+     * @return The amount to bet.
+     */
     public int bet() {
         // return the amount of money to bet
         bet = 2;
         return 2;
     }
 
+    /**
+     * This function splits the hand.
+     */
     public void split() {
         // decide if you want to split
         if (hands.get(0).getValue() == 22) {
@@ -83,6 +110,10 @@ public class Player {
             hands.get(0).hand.remove(1);
         }
     }
+
+    /**
+     * This returns the toString representation of the player.
+     */
     @Override
     public String toString() {
         return "Player: " + hands;

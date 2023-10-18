@@ -1,3 +1,10 @@
+
+/**
+ * This class represents a card.
+ * 
+ * @since Fall 2023
+ * @author Michael Plekan
+ */
 public class Card {
     public final int value;
     public final String name;

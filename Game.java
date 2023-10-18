@@ -1,6 +1,17 @@
 import java.util.ArrayList;
 
+/**
+ * This class represents a player in the game.
+ * 
+ * @since Fall 2023
+ * @Author Michael Plekan
+ */
 public class Game{
+    /**
+     * This function runs the game.
+     * 
+     * @param args The arguments that are supposed to be passed in.
+     */
     public static void main(String[] args){
         ArrayList<Player> players = new ArrayList<Player>();
         Dealer dealer = new Dealer();
