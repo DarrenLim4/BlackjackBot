@@ -50,23 +50,28 @@ public class Game{
             while(dealer.decide(deck) != STD);
             //determine winners
             for(Player player : players){
-                for(int i = 0; i < player.hands.size(); i++){
-                    if(player.hands.get(i).getValue() > 21){//player bust
+                for(Hand hand : player.hands){
+                    if(hand.getValue() > 21 && hand.getSoftValue() > 21){//player bust
                         player.difference -= player.bet;
                     }
-                    else if (dealer.hand.getValue() > 21){//dealer bust
+                    else if (dealer.hand.getValue() > 21 && dealer.hand.getSoftValue() > 21){//dealer bust
                         player.difference += player.bet;
                     }
-                    else if(player.hands.get(i).getValue() == dealer.hand.getValue()){//push
+                    else if (dealer.hand.getValue() == 21 || dealer.hand.getSoftValue() == 21){//dealer blackjack
+                        player.difference -= player.bet;
+                    }
+                    else if (hand.getValue() == 21 || hand.getSoftValue() == 21){//player blackjack
+                        player.difference += player.bet;
+                    }
+                    else if(hand.getValue() == dealer.hand.getValue()){//push
                         player.difference += 0;
                     }
-                    else if(player.hands.get(i).getValue() > dealer.hand.getValue()){//player win
+                    else if(hand.getValue() > dealer.hand.getValue()){//player win
                         player.difference += player.bet;
                     }
-                    else if ( player.hands.get(i).getValue() < dealer.hand.getValue()){//player lose
+                    else if ( hand.getValue() < dealer.hand.getValue()){//player lose
                         player.difference -= player.bet;
                     }
-                    
                     else{
                         Logging.logToGroup("error","Error in determining winner");
                         System.exit(1);

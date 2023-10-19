@@ -29,6 +29,7 @@ public class Dealer {
      * @param deck The deck to be drawn from
      */
     public void handle(int action, Player player,int handIndex, Deck deck) {
+        Logging.logToGroup("game", player.hands.get(handIndex)+"",action==0?"HIT":action==1?"STD":"DD");
         // handle the action
         switch (action) {
             case HIT:
