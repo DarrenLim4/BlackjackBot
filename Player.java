@@ -10,6 +10,7 @@ public class Player {
     private static final int HIT = 0;
     private static final int STD = 1;
     private static final int DD = 2;
+    private static final int SPT = 4;
     // private final int SPT = 3;
     public ArrayList<Hand> hands;
     public int bet = 0;
@@ -51,6 +52,20 @@ public class Player {
             { STD, STD, STD, STD, STD, STD, STD, STD, STD, STD }, // for value A,10
     };
 
+    private final int[][] matchingTable = {
+        // Dealer's up card from 2 to Ace
+        {HIT,HIT,SPT,SPT,SPT,SPT,HIT,HIT,HIT,HIT},//for value 2,2
+        {HIT,HIT,SPT,SPT,SPT,SPT,HIT,HIT,HIT,HIT},//for value 3,3
+        {HIT,HIT,HIT,HIT,HIT,HIT,HIT,HIT,HIT,HIT},//for value 4,4
+        {DD,DD,DD,DD,DD,DD,DD,DD,HIT,HIT},//for value 5,5
+        {SPT,SPT,SPT,SPT,SPT,HIT,HIT,HIT,HIT,HIT},//for value 6,6
+        {SPT,SPT,SPT,SPT,SPT,SPT,HIT,HIT,HIT,HIT},//for value 7,7
+        {SPT,SPT,SPT,SPT,SPT,SPT,SPT,SPT,SPT,SPT},//for value 8,8
+        {SPT,SPT,SPT,SPT,SPT,STD,SPT,SPT,STD,STD},//for value 9,9
+        {STD,STD,STD,STD,STD,STD,STD,STD,STD,STD},//for value 10,10
+        {SPT,SPT,SPT,SPT,SPT,SPT,SPT,SPT,SPT,SPT},//for value A,A
+    };
+
     /**
      * This function creates a new player
      * 
@@ -72,15 +87,21 @@ public class Player {
         if (hands.get(hand).getValue() > 21) {
             return STD;
         }
+        //System.out.println(hands.get(hand).getValue()+" : "+hands.get(hand));
         // decide what to do
         if (intialHand) {
-            if (hands.get(hand).isSoft()) {
+            if (hands.get(hand).hand.size()==2 && hands.get(hand).isPair()) {
+                return matchingTable[(hands.get(hand).getValue()/2)-2][DealerUpCard - 2];
+            }else if (hands.get(hand).isSoft()) {
                 return softTable[hands.get(hand).getSoftValue()-3][DealerUpCard - 2];
             } else {
                 return hardTable[hands.get(hand).getValue()-3][DealerUpCard - 2];
             }
         } else {
-            if (hands.get(hand).isSoft()) {
+            if (hands.get(hand).hand.size()==2 && hands.get(hand).isPair()) {
+                return matchingTable[(hands.get(hand).getValue()/2)-2][DealerUpCard - 2] == DD ? HIT
+                        : matchingTable[(hands.get(hand).getValue()/2)-2][DealerUpCard - 2];
+            }else if (hands.get(hand).isSoft()) {
                 return softTable[hands.get(hand).getSoftValue()-3][DealerUpCard - 2] == DD ? HIT
                         : softTable[hands.get(hand).getSoftValue()-3][DealerUpCard - 2];
             } else {
@@ -97,21 +118,6 @@ public class Player {
     public void bet() {
         // return the amount of money to bet
         bet = 2;
-    }
-
-    /**
-     * This function splits the hand.
-     */
-    public void split() {
-        // decide if you want to split
-        if (hands.get(0).getValue() == 22) {
-            // split
-            hands.add(new Hand(new Card[] {
-                    hands.get(0).hand.get(1)
-            }));
-
-            hands.get(0).hand.remove(1);
-        }
     }
 
     /**

@@ -9,6 +9,7 @@ public class Dealer {
     private static final int HIT = 0;
     private static final int STD = 1;
     private static final int DD = 2;
+    private static final int SPT = 4;
     public Hand hand;
 
     /**
@@ -40,6 +41,12 @@ public class Dealer {
             case DD:
                 player.hands.get(handIndex).addCard(deck.draw());
                 player.bet *= 2;
+                break;
+            case SPT:
+                player.hands.add(new Hand(player.hands.get(handIndex).hand.get(1)));
+                player.hands.get(handIndex).hand.remove(1);
+                player.hands.get(handIndex).addCard(deck.draw());
+                player.hands.get(player.hands.size()-1).addCard(deck.draw());
                 break;
             default:
                 Logging.logToGroup("error", "Invalid action: " + action);// change to log to error group

@@ -110,7 +110,17 @@ public class Hand {
         }
         return false;
     }
-
+    /**
+     * Returns if the hand is a pair.
+     * 
+     * @return if the hand is a pair.
+     */
+    public boolean isPair() {
+        if (hand.get(0).value == hand.get(1).value) {
+            return true;
+        }
+        return false;
+    }
     /**
      * Returns the string representation of the hand.
      * 

@@ -14,3 +14,5 @@ clean:
 	$(RM) *.class
 cleanCsv:
 	$(RM) *.csv
+cleancsv:
+	$(RM) *.csv
