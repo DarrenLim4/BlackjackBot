@@ -90,7 +90,7 @@ public class Player {
         //System.out.println(hands.get(hand).getValue()+" : "+hands.get(hand));
         // decide what to do
         if (intialHand) {
-            if (hands.get(hand).hand.size()==2 && hands.get(hand).isPair()) {
+            if (hands.get(hand).hand.size()==2 && hands.get(hand).isPair() && hands.size()<5) {
                 return matchingTable[(hands.get(hand).getValue()/2)-2][DealerUpCard - 2];
             }else if (hands.get(hand).isSoft()) {
                 return softTable[hands.get(hand).getSoftValue()-3][DealerUpCard - 2];
@@ -98,7 +98,7 @@ public class Player {
                 return hardTable[hands.get(hand).getValue()-3][DealerUpCard - 2];
             }
         } else {
-            if (hands.get(hand).hand.size()==2 && hands.get(hand).isPair()) {
+            if (hands.get(hand).hand.size()==2 && hands.get(hand).isPair() && hands.size()<5) {
                 return matchingTable[(hands.get(hand).getValue()/2)-2][DealerUpCard - 2] == DD ? HIT
                         : matchingTable[(hands.get(hand).getValue()/2)-2][DealerUpCard - 2];
             }else if (hands.get(hand).isSoft()) {

@@ -19,7 +19,7 @@ public class Game{
         ArrayList<Player> players = new ArrayList<Player>();
         Deck deck = new Deck(1000);
         Dealer dealer = new Dealer(deck);
-        int shuffles = 0;
+        int shuffles = 1;
 
         //get input from args and create players
         for(int i = 0; i < Integer.parseInt(args[0]); i++){
