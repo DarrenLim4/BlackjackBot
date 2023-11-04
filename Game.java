@@ -16,21 +16,32 @@ public class Game{
      * @param args The arguments that are supposed to be passed in.
      */
     public static void main(String[] args){
-        ArrayList<Player> players = new ArrayList<Player>();
-        Deck deck = new Deck(1000);
-        Dealer dealer = new Dealer(deck);
         int shuffles = 1;
-
+        int numdecks = 1;
+        ArrayList<Player> players;
+        Deck deck;
+        Dealer dealer;
+        //error check for args
+        if(args.length < 2){
+            System.err.println("Usage: java Game <number of players> <number of shuffles> <number of decks>");
+            System.err.flush();
+            System.exit(1);
+        }
         //get input from args and create players
+        players = new ArrayList<Player>();
         for(int i = 0; i < Integer.parseInt(args[0]); i++){
             players.add(new Player());
         }
-        //get input from args for number of shuffles
-        if(args.length > 1){
+        //get input from args for number of shuffles and number of decks
+        if(args.length > 2){
             shuffles = Integer.parseInt(args[1]);
+            numdecks = Integer.parseInt(args[2]);
         }
+        deck = new Deck(numdecks);
+        dealer = new Dealer(deck);
+        
+        //run game
         for(int x = 0; x < shuffles; x++){
-            deck= new Deck(1000);
             while(deck.size>(players.size()+1)*5){
                 //print
                 System.out.println("New Round");
@@ -98,6 +109,7 @@ public class Game{
                 dealer.hand = new Hand(deck.draw(), deck.draw());
             }//end of round
             System.out.println("Hit cut card");
+            deck= new Deck(numdecks);
         }//end of shuffles
     }
 }

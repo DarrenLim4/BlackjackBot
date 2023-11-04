@@ -10,7 +10,11 @@ import java.io.IOException;
  */
 public class Logging {
     File logFile;
-
+    static final String[] errorHeaders = {"Class", "Function", "Message"};
+    static final String[] playerHeaders = {"Message"};
+    static final String[] dealerHeaders = {"Message"};
+    static final String[] gameHeaders = {"hand", "action"};
+    static final String[] infoHeaders = {"Message"};
     /**
      * This function logs a message to a csv file.
      * 
@@ -33,29 +37,34 @@ public class Logging {
             if (logFile.length() == 0) {
                 switch(group){
                     case "player":
-                        writer.append("Class, function, message\n");
+                        writer.append(String.join(",", playerHeaders) + "\n");
                         break;
                     case "dealer":
-                        writer.append("Class, function, message\n");
+                        writer.append(String.join(",", dealerHeaders) + "\n");
                         break;
                     case "game":
-                        writer.append("Class, function, message\n");
+                        writer.append(String.join(",", gameHeaders) + "\n");
                         break;
                     case "error":
-                        writer.append("Class, function, message\n");
+                        writer.append(String.join(",", errorHeaders) + "\n");
                         break;
                     case "info":
-                        writer.append("Class, function, message\n");
+                        writer.append("message\n");
                         break;
                     default:
-                        log ("error", className, functionName, "Error:  " + group + " is not a valid log group!");
+                        log ("error", className, functionName, "Invalid log group " + group);
                 }
             }
-            writer.append(className + ", " + functionName + ", " + String.join(",", message) + "\n");
+            if(group.equals("error")) {
+                writer.append(className + ", " + functionName + ", " + String.join(",", args) + "\n");
+            }
+            else{
+                writer.append( String.join(",", args) + "\n");
+            }
             writer.close();
         } catch (IOException e) {
             System.out.println("Error writing to log file");
-            System.exit(500);
+            System.exit(0);
         }
     }
 
@@ -66,38 +75,30 @@ public class Logging {
      * @param args The message to log.
      */
     public static void logToGroup(String group, String ...args) {
-        //set the standard number of arguments that can be overridden in the switch statement
-        int minArgs = 1;
-        int maxArgs = 2;
-
         String className = Thread.currentThread().getStackTrace()[2].getClassName() + ".java";
         String functionName = Thread.currentThread().getStackTrace()[2].getMethodName() + "()";
         String lineNumber = "line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "";
 
         switch(group) {
             case "player":
-                checkArgsAndLog(group, minArgs, maxArgs, className, functionName, lineNumber, args);
+                checkArgsAndLog(group, playerHeaders.length, className, functionName, lineNumber, args);
                 break;
             case "dealer":
-                checkArgsAndLog(group, minArgs, maxArgs, className, functionName, lineNumber, args);
+                checkArgsAndLog(group, dealerHeaders.length, className, functionName, lineNumber, args);
                 break;
             case "game":
-                minArgs = 3;
-                maxArgs = 3;
-                checkArgsAndLog(group, minArgs, maxArgs, className, functionName, lineNumber, args);
+                checkArgsAndLog(group, gameHeaders.length, className, functionName, lineNumber, args);
                 break;
             case "error":
-                minArgs = 1;
-                maxArgs = 1;
-                checkArgsAndLog(group, minArgs, maxArgs, className, functionName, lineNumber, args);
+                checkArgsAndLog(group, errorHeaders.length-2, className, functionName, lineNumber, args);
                 break;
             case "info":
-                checkArgsAndLog(group, minArgs, maxArgs, className, functionName, lineNumber, args);
+                checkArgsAndLog(group, infoHeaders.length, className, functionName, lineNumber, args);
                 break;
             default:
                 System.out.println("Error:  " + group + " is not a valid log group!");
                 System.out.flush();
-                System.exit(404);
+                System.exit(0);
         }
     }
 
@@ -112,9 +113,11 @@ public class Logging {
      * @param lineNumber The line number of the function that called the log function.
      * @param args The message to log.
      */
-    private static void checkArgsAndLog(String group, int minArgs, int maxArgs, String className, String functionName, String lineNumber, String ...args) {
-        if(args.length > minArgs && args.length < maxArgs) {
-            log ("error", className, functionName + " " + lineNumber, "Invalid number of arguments for log group " + group);
+    private static void checkArgsAndLog(String group, int numArgs, String className, String functionName, String lineNumber, String ...args) {
+        if(args.length != numArgs) {
+            System.err.println("Error:  " + group + " log group requires " + numArgs + " arguments!");
+            System.err.flush();
+            System.exit(0);
         } else {
             log(group, className, functionName + " " + lineNumber, args);
         }      
