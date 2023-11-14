@@ -11,7 +11,7 @@ public class Deck {
     public ArrayList<Card> shoe;
     public int[] cardsLeft;
     public int size;
-    
+    public int GUcount;
 
     /**
      * This constructor creates the shoe with a given number of decks.
@@ -20,6 +20,7 @@ public class Deck {
      */
     public Deck(int numDecks) {
         this.shoe = new ArrayList<Card>();
+        this.GUcount = 0;
         this.cardsLeft = new int[13];
         if(numDecks < 1){
             Logging.logToGroup("error", "Error: Invalid number of decks");
@@ -95,6 +96,47 @@ public class Deck {
         Card card = shoe.remove(index);
         this.cardsLeft[getIndexForCardsLeft(card)]--;
         this.size--;
+        switch(card.name){
+            case "Ace":
+                GUcount -= 60;
+                break;
+            case "2":
+                GUcount += 37;
+                break;
+            case "3":
+                GUcount += 45;
+                break;
+            case "4":
+                GUcount += 52;
+                break;
+            case "5":
+                GUcount += 70;
+                break;
+            case "6":
+                GUcount += 46;
+                break;
+            case "7":
+                GUcount += 27;
+                break;
+            case "8":
+                GUcount += 0;
+                break;
+            case "9":
+                GUcount -= 17;
+                break;
+            case "10":
+                GUcount -= 50;
+                break;
+            case "Jack":
+                GUcount -= 50;
+                break;
+            case "Queen":
+                GUcount -= 50;
+                break;
+            case "King":
+                GUcount -= 50;
+                break;
+        }
         return card;
     }
 
@@ -157,5 +199,8 @@ public class Deck {
             return index;
         }
         
+    }
+    int runningcount(){
+        return (int)((double)GUcount/(shoe.size()<=52?1:(double)shoe.size()/52.0));
     }
 }

@@ -45,6 +45,10 @@ public class Game{
             while(deck.size>(players.size()+1)*5){
                 //print
                 System.out.println("New Round");
+                //reset difference
+                for(Player player : players){
+                    player.difference = 0;
+                }
                 //deal cards
                 for(Player player : players){
                     player.hands.add(new Hand(deck.draw(), deck.draw()));
@@ -78,7 +82,7 @@ public class Game{
                             player.difference -= player.bet;
                         }
                         else if (hand.getValue() == 21 || hand.getSoftValue() == 21){//player blackjack
-                            player.difference += player.bet;
+                            player.difference += player.bet*1.5;
                         }
                         else if(hand.getValue() == dealer.hand.getValue()){//push
                             player.difference += 0;
@@ -99,6 +103,7 @@ public class Game{
                 for(Player player : players){
                     //System.out.print(player.hands);
                     //System.out.println(player.difference);
+                    Logging.logToGroup("game", new String[] {deck.runningcount()+"", player.difference+""});
                 }
                 //reset hands and set intialHand to false
                 for(Player player : players){
@@ -110,6 +115,7 @@ public class Game{
             }//end of round
             System.out.println("Hit cut card");
             deck= new Deck(numdecks);
+            
         }//end of shuffles
     }
 }

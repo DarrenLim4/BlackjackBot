@@ -13,7 +13,7 @@ public class Logging {
     static final String[] errorHeaders = {"Class", "Function", "Message"};
     static final String[] playerHeaders = {"Message"};
     static final String[] dealerHeaders = {"Message"};
-    static final String[] gameHeaders = {"hand", "action"};
+    static final String[] gameHeaders = {"count", "difference"};
     static final String[] infoHeaders = {"Message"};
     /**
      * This function logs a message to a csv file.
