@@ -21,6 +21,7 @@ public class Game{
         ArrayList<Player> players;
         Deck deck;
         Dealer dealer;
+        int currentCount = 0;
         //error check for args
         if(args.length < 2){
             System.err.println("Usage: java Game <number of players> <number of shuffles> <number of decks>");
@@ -38,6 +39,7 @@ public class Game{
             numdecks = Integer.parseInt(args[2]);
         }
         deck = new Deck(numdecks);
+        currentCount = deck.runningcount();
         dealer = new Dealer(deck);
         
         //run game
@@ -103,13 +105,14 @@ public class Game{
                 for(Player player : players){
                     //System.out.print(player.hands);
                     //System.out.println(player.difference);
-                    Logging.logToGroup("game", new String[] {deck.runningcount()+"", player.difference+""});
+                    Logging.logToGroup("game", new String[] {currentCount+"", player.difference+""});
                 }
                 //reset hands and set intialHand to false
                 for(Player player : players){
                     player.hands = new ArrayList<Hand>();
                     player.intialHand = false;
                 }
+                currentCount = deck.runningcount();
                 //reset dealer hand
                 dealer.hand = new Hand(deck.draw(), deck.draw());
             }//end of round
