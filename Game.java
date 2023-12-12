@@ -46,7 +46,7 @@ public class Game{
         for(int x = 0; x < shuffles; x++){
             while(deck.size>(players.size()+1)*5){
                 //print
-                System.out.println("New Round");
+                //System.out.println("New Round");
                 //reset difference
                 for(Player player : players){
                     player.difference = 0;
@@ -116,9 +116,15 @@ public class Game{
                 //reset dealer hand
                 dealer.hand = new Hand(deck.draw(), deck.draw());
             }//end of round
-            System.out.println("Hit cut card");
+            //System.out.println("Hit cut card");
             deck= new Deck(numdecks);
             
         }//end of shuffles
+        //run analysis.py
+        try{
+            Process p = Runtime.getRuntime().exec("python analysis.py");
+        }catch(Exception e){
+            System.out.println(e);
+        }
     }
 }

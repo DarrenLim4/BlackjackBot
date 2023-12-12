@@ -11,5 +11,10 @@ with open('game.csv', mode='r') as infile:
         #update the avgerage if the key is already in the dictionary else add the key and value
         data.update({count: (data[count]+win)/2 if count in data else win})
 #sort the dictionary by key and print the result
-for key in sorted(data.keys()):
-    print(key, data[key])
+#create csv file
+with open('analysis.csv', mode='w') as outfile:
+    writer = csv.writer(outfile)
+    writer.writerow(['Count', 'Average'])
+    for key in sorted(data.keys()):
+        writer.writerow([key, data[key]])
+        
